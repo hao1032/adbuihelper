@@ -7,19 +7,13 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
-import androidx.test.uiautomator.UiObjectNotFoundException;
-import androidx.test.uiautomator.UiSelector;
-import androidx.test.uiautomator.Until;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.uiautomator.Until.findObject;
 import static org.junit.Assert.*;
 
 /**
@@ -29,40 +23,28 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    private UiDevice mDevice;
+    private static final String TAG = "tango";
+    private UiDevice device;
 
     @Before
     public void setUp() {
-        mDevice = UiDevice.getInstance(getInstrumentation());
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
     }
 
     @Test
-    public void useAppContext() {
+    public void useAppContext() throws InterruptedException {
         // Context of the app under test.
-        Context appContext = getInstrumentation().getTargetContext();
+        Log.i(TAG, "useAppContext run .........");
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.github.adbui", appContext.getPackageName());
+        Thread.sleep(10 * 1000);
+        Log.i(TAG, "useAppContext end .........");
     }
 
     @Test
-    public void weAppHome() {
-        UiObject2 ui = mDevice.findObject(By.res("com.tencent.mtt:id/app_brand_multi_page_tabbar"));
-        Log.i("tango", ui.toString());
-    }
-
-    @Test
-    public void uiDisplayed() throws UiObjectNotFoundException {
-        UiObject2 ui = mDevice.findObject(By.text("设置"));
-        Log.i("tango", ui.toString());
-        ui.click();
-
-//        UiObject ui1 = mDevice.findObject(new UiSelector().text("设置"));
-//        Log.i("tango1", ui1.toString());
-//        ui1.click();
-    }
-
-    @Test
-    public void bugreport() throws IOException {
-        String out = mDevice.executeShellCommand("bugreportz /sdcard/Tencent/tango.zip");
-        Log.i("tango", out);
+    public void useDevice() {
+        UiObject2 setting =  device.findObject(By.text("设置"));
+        setting.click();
     }
 }
